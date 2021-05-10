@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
-  port: 3306,
+  //port: 3306,
 
   // Your username
   user: "root",
@@ -61,4 +61,45 @@ function initiate() {
     });
 }
 
+function viewEntry() {
+  inquirer
+    .prompt([
+      {
+        name: "userViewEntry",
+        type: "list",
+        message: "Would you like to view employees?",
+        choices: ["View roles", "View employees", "View departments"],
+      },
+    ])
+    .then((answer) => {
+      if (answer.userViewEntry === "View departments") {
+        connection.query("SELECT * FROM department", (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          initiate();
+        });
+      } else if (answer.userViewEntry === "View roles") {
+        connection.query("SELECT * FROM roles", (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          initiate();
+        });
+      } else if (answer.userViewEntry === "View employees") {
+        connection.query("SELECT * FROM employee", (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          initiate();
+        });
+      }
+    });
+}
+
 initiate();
+
+// const afterConnection = () => {
+//   connection.query("SELECT * FROM department, ", (err, res) => {
+//     if (err) throw err;
+//     console.log(res);
+//     connection.end();
+//   });
+// };
