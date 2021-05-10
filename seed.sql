@@ -63,8 +63,8 @@ VALUES ("Sales Lead", 80000, 7);
 -- Adding Fake employees to employee table
 INSERT INTO employee (first_name, last_name, role_id, manager_name)
 VALUES ("Lamar", "Jackson", 1, "Russell Wilson");
-INSERT INTO employee (first_name, last_name, role_id, manager_name)
-VALUES ("Aaron", "Donald", 3, "N/A");
+INSERT INTO employee (first_name, last_name, role_id, manager_name, manager_id)
+VALUES ("Aaron", "Donald", 3, "N/A", 2);
 INSERT INTO employee (first_name, last_name, role_id, manager_name)
 VALUES ("Patrick", "Mahomes", 5, "N/A");
 INSERT INTO employee (first_name, last_name, role_id, manager_name)
@@ -79,5 +79,5 @@ INSERT INTO employee (first_name, last_name, role_id, manager_name)
 VALUES ("Tom", "Brady", 11, "N/A");
 INSERT INTO employee (first_name, last_name, role_id, manager_name)
 VALUES ("Tyreek", "Hill", 13, "N/A");
-INSERT INTO employee (first_name, last_name, role_id, manager_name)
-VALUES ("Matt", "Ryan", 15, "N/A");
+INSERT INTO employee (first_name, last_name, role_id, manager_name, manager_id)
+VALUES ("Matt", "Ryan", 15, "N/A", 5);
