@@ -25,12 +25,12 @@ const connection = mysql.createConnection({
 //   });
 // };
 
-// connection.connect((err) => {
-//   if (err) throw err;
-//   console.log(`connected as id ${connection.threadId}`);
-//   connection.end();
-//   // afterConnection();
-// });
+connection.connect((err) => {
+  if (err) throw err;
+  console.log(`connected as id ${connection.threadId}`);
+  connection.end();
+  // afterConnection();
+});
 
 // Begins of asking questions
 function initiate() {
@@ -94,7 +94,29 @@ function viewEntry() {
     });
 }
 
+// function addEntry() {
+//   inquirer.prompt([
+//     {
+//       name: "userAddEntry",
+//       type: "list",
+//       message: "What would you like to add?",
+//       choices: [
+//         "Add deparment",
+//         "Add an employee",
+//         "Add roles",
+//         "Return to Menu",
+//       ],
+//     },
+//   ]);
+// }
+
 initiate();
+// addEntry();
+//   ])
+//  .then((answer) => {
+//     if (answer.userAddEntry === "Add department"){
+//     addDepartment();
+//     }}}
 
 // const afterConnection = () => {
 //   connection.query("SELECT * FROM department, ", (err, res) => {
