@@ -114,7 +114,19 @@ function addEntry() {
         addDepartment();
       }
       if (answer.userAddEntry === "Add roles") {
-        addRole();
+        var departmentChoices = [];
+        connection.query("SELECT * FROM department", (err, res) => {
+          if (err) throw err;
+          departmentChoices = res.map(({ id, name }) => ({
+            value: id,
+            name: name,
+          }));
+          console.log(departmentChoices);
+          addRole(departmentChoices);
+          // if (err) throw err;
+          // console.table(res);
+          // initiate();
+        });
       }
     });
 }
@@ -137,6 +149,32 @@ function addDepartment() {
           initiate();
         }
       );
+    });
+}
+
+function addRole(departmentChoices) {
+  inquirer
+    .prompt([
+      {
+        name: "title",
+        type: "input",
+        message: "What is the name of the role you'd like to add?",
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What is the salary for this role?",
+      },
+      {
+        name: "userDeptId",
+        type: "list",
+        message: "What department would you like to add this person to?",
+        choices: departmentChoices,
+      },
+    ])
+    .then((answer) => {
+      connection.query; // We need to
+      console.log(answer);
     });
 }
 
