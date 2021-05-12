@@ -25,12 +25,12 @@ const connection = mysql.createConnection({
 //   });
 // };
 
-connection.connect((err) => {
-  if (err) throw err;
-  console.log(`connected as id ${connection.threadId}`);
-  connection.end();
-  // afterConnection();
-});
+// connection.connect((err) => {
+//   if (err) throw err;
+//   console.log(`connected as id ${connection.threadId}`);
+//   connection.end();
+//   // afterConnection();
+// });
 
 // Begins of asking questions
 function initiate() {
@@ -94,21 +94,63 @@ function viewEntry() {
     });
 }
 
-// function addEntry() {
-//   inquirer.prompt([
-//     {
-//       name: "userAddEntry",
-//       type: "list",
-//       message: "What would you like to add?",
-//       choices: [
-//         "Add deparment",
-//         "Add an employee",
-//         "Add roles",
-//         "Return to Menu",
-//       ],
-//     },
-//   ]);
-// }
+function addEntry() {
+  inquirer
+    .prompt([
+      {
+        name: "userAddEntry",
+        type: "list",
+        message: "What would you like to add?",
+        choices: [
+          "Add department",
+          "Add an employee",
+          "Add roles",
+          "Return to Menu",
+        ],
+      },
+    ])
+    .then((answer) => {
+      if (answer.userAddEntry === "Add department") {
+        addDepartment();
+      }
+      if (answer.userAddEntry === "Add roles") {
+        addRole();
+      }
+    });
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        name: "userDepartment",
+        type: "input",
+        message: "What department would you like to add?",
+      },
+    ])
+    .then((answer) => {
+      connection.query(
+        `INSERT INTO department (name) VALUES ("${answer.userDepartment}")`,
+        (err, res) => {
+          if (err) throw err;
+          console.log("Successfully added!");
+          initiate();
+        }
+      );
+    });
+}
+
+// Build EndProgram functioin
+function endProgram() {
+  console.log("Goodbye");
+  connection.end();
+  //process.exit();
+}
+// if (answer.userViewEntry === "View departments") {
+//     connection.query("SELECT * FROM department", (err, res) => {
+//       if (err) throw err;
+//       console.table(res);
+//       initiate();
 
 initiate();
 // addEntry();
@@ -124,4 +166,4 @@ initiate();
 //     console.log(res);
 //     connection.end();
 //   });
-// };
+// }
