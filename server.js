@@ -261,7 +261,7 @@ function updateEntry() {
       } else if (answer.userUpdateEntry === "Delete a job role") {
         console.log("Test");
       } else if (answer.userUpdateEntry === "Delete an employee") {
-        console.log("WTF");
+        console.log("No!");
       } else if (answer.userUpdateEntry === "Update an employee's role") {
         console.log("Yeah!");
       } else if (answer.userUpdateEntry === "Return to menu") {
