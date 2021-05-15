@@ -45,6 +45,8 @@ Need to contact [jung0808?](https://github.com/jung0808) <br>
 ![Screenshot](Employee-tracker-1.png)
 ![Screenshot](Employee-tracker-2.png)
 
-## <br> Attached is also a personal link to my homework assignment #12
+## <br> Attached is also a personal link to my homework assignment #12 and Video Demonstration
+
+## https://drive.google.com/file/d/1kCMnycg3THIOE-IM22YQvimMv7RWmAIW/view
 
 ## https://github.com/jung0808/homework-12-employee-tracker
