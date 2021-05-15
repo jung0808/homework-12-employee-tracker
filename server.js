@@ -115,17 +115,43 @@ function addEntry() {
       }
       if (answer.userAddEntry === "Add roles") {
         var departmentChoices = [];
-        connection.query("SELECT * FROM department", (err, res) => {
+        connection.query("SELECT * FROM roles", (err, res) => {
           if (err) throw err;
-          departmentChoices = res.map(({ id, name }) => ({
+          departmentChoices = res.map(({ id, title, salary }) => ({
             value: id,
-            name: name,
+            name: title,
+            salary: salary,
           }));
-          console.log(departmentChoices);
+          //console.log(departmentChoices);
           addRole(departmentChoices);
           // if (err) throw err;
           // console.table(res);
           // initiate();
+        });
+      }
+      if (answer.userAddEntry === "Add an employee") {
+        var employeeChoices = [];
+        connection.query("SELECT * FROM employee", (err, res) => {
+          if (err) throw err;
+          employeeChoices = res.map(
+            ({
+              id,
+              first_name,
+              last_name,
+              role_id,
+              manager_name,
+              manager_id,
+            }) => ({
+              value: id,
+              name: first_name,
+              lname: last_name,
+              rid: role_id,
+              mname: manager_name,
+              mid: manager_id,
+            })
+          );
+          //console.log(employeeChoices);
+          addemployee(employeeChoices);
         });
       }
     });
@@ -174,10 +200,75 @@ function addRole(departmentChoices) {
     ])
     .then((answer) => {
       connection.query; // We need to
-      console.log(answer);
+      `INSERT INTO roles (title, salary, department_id) VALUES ("${answer.departmentChoices}")`,
+        console.log(answer);
+      initiate();
     });
 }
 
+function addemployee(employeeChoices) {
+  inquirer
+    .prompt([
+      {
+        name: "firstname",
+        type: "input",
+        message: "Please enter the employee's fist name",
+      },
+      {
+        name: "lastName",
+        type: "input",
+        message: "Please enter the employee's last name",
+      },
+      {
+        name: "employeeRole",
+        type: "list",
+        message: "please select the employee's job role",
+        choices: employeeChoices,
+      },
+      {
+        name: "employeesManager",
+        type: "input",
+        message:
+          "Please enter the name of this employee's manager. If none, please enter N/A",
+      },
+    ])
+    .then((answer) => {
+      connection.query;
+      console.table(answer);
+      initiate();
+    });
+}
+
+function updateEntry() {
+  inquirer
+    .prompt([
+      {
+        name: "userUpdateEntry",
+        type: "list",
+        message: "What would you like to change?",
+        choices: [
+          "Delete a Department",
+          "Delete a job role",
+          "Delete an employee",
+          "Update an employee's role",
+          "Return to menu",
+        ],
+      },
+    ])
+    .then((answer) => {
+      if (answer.userUpdateEntry === "Delete a Department") {
+        console.log("sfsfgddfgsfggdd");
+      } else if (answer.userUpdateEntry === "Delete a job role") {
+        console.log("Test");
+      } else if (answer.userUpdateEntry === "Delete an employee") {
+        console.log("WTF");
+      } else if (answer.userUpdateEntry === "Update an employee's role") {
+        console.log("Yeah!");
+      } else if (answer.userUpdateEntry === "Return to menu") {
+        initiate();
+      }
+    });
+}
 // Build EndProgram functioin
 function endProgram() {
   console.log("Goodbye");
