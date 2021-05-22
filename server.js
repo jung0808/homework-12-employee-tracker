@@ -130,28 +130,15 @@ function addEntry() {
         });
       }
       if (answer.userAddEntry === "Add an employee") {
-        var employeeChoices = [];
-        connection.query("SELECT * FROM employee", (err, res) => {
+        var roleChoices = [];
+        connection.query("SELECT * FROM roles", (err, res) => {
           if (err) throw err;
-          employeeChoices = res.map(
-            ({
-              id,
-              first_name,
-              last_name,
-              role_id,
-              manager_name,
-              manager_id,
-            }) => ({
-              value: id,
-              name: first_name,
-              lname: last_name,
-              rid: role_id,
-              mname: manager_name,
-              mid: manager_id,
-            })
-          );
+          roleChoices = res.map(({ id, title }) => ({
+            value: id,
+            name: title,
+          }));
           //console.log(employeeChoices);
-          addemployee(employeeChoices);
+          addemployee(roleChoices);
         });
       }
     });
@@ -206,7 +193,7 @@ function addRole(departmentChoices) {
     });
 }
 
-function addemployee(employeeChoices) {
+function addemployee(roleChoices) {
   inquirer
     .prompt([
       {
@@ -223,19 +210,18 @@ function addemployee(employeeChoices) {
         name: "employeeRole",
         type: "list",
         message: "please select the employee's job role",
-        choices: employeeChoices,
-      },
-      {
-        name: "employeesManager",
-        type: "input",
-        message:
-          "Please enter the name of this employee's manager. If none, please enter N/A",
+        choices: roleChoices,
       },
     ])
     .then((answer) => {
-      connection.query;
-      console.table(answer);
-      initiate();
+      connection.query(
+        `INSERT INTO employee (first_name, last_name, role_id) VALUES ("${answer.firstname}","${answer.lastName}", ${answer.employeeRole})`,
+        (error, data) => {
+          if (error) throw error;
+          console.log("Data successfully added!");
+          initiate();
+        }
+      );
     });
 }
 
@@ -246,25 +232,13 @@ function updateEntry() {
         name: "userUpdateEntry",
         type: "list",
         message: "What would you like to change?",
-        choices: [
-          "Delete a Department",
-          "Delete a job role",
-          "Delete an employee",
-          "Update an employee's role",
-          "Return to menu",
-        ],
+        choices: ["Update an employee's role", "Return to menu"],
       },
     ])
     .then((answer) => {
-      if (answer.userUpdateEntry === "Delete a Department") {
-        console.log("sfsfgddfgsfggdd");
-      } else if (answer.userUpdateEntry === "Delete a job role") {
-        console.log("Test");
-      } else if (answer.userUpdateEntry === "Delete an employee") {
-        console.log("No!");
-      } else if (answer.userUpdateEntry === "Update an employee's role") {
-        console.log("Yeah!");
-      } else if (answer.userUpdateEntry === "Return to menu") {
+      if (answer.userUpdateEntry === "Update an employee's role") {
+        updateEmployeeRole();
+      } else {
         initiate();
       }
     });
@@ -275,6 +249,69 @@ function endProgram() {
   connection.end();
   //process.exit();
 }
+function updateEmployeeRole() {
+  var listEmployeeChoices = [];
+  var listRowChoices = [];
+  connection.query("SELECT * FROM employee", (err, data) => {
+    if (err) throw err;
+    listEmployeeChoices = data.map((employee) => ({
+      value: employee.id,
+      name: employee.first_name + " " + employee.last_name,
+    }));
+    console.log(listEmployeeChoices);
+    connection.query("SELECT * FROM roles", (err, data) => {
+      if (err) throw err;
+      listRowChoices = data.map((role) => ({
+        value: role.id,
+        name: role.title,
+      }));
+      inquirer
+        .prompt([
+          {
+            name: "id",
+            type: "list",
+            message: "Which employee do you want to update the role of?",
+            choices: listEmployeeChoices,
+          },
+          {
+            name: "roleId",
+            type: "list",
+            message: "Which is their new role of the employee",
+            choices: listRowChoices,
+          },
+        ])
+        .then((answer) => {
+          console.log(answer);
+          connection.query(
+            `UPDATE employee SET role_id = ${answer.roleId} WHERE id = ${answer.id}`,
+            (err, data) => {
+              if (err) throw err;
+              console.log("Role of the employee has been updated!");
+              initiate();
+            }
+          );
+        });
+    });
+    // inquirer
+    //   .prompt([
+    //     {
+    //       name: "id",
+    //       type: "list",
+    //       message: "Which employee do you want to update the role of?",
+    //       choices: listEmployeeChoices,
+    //     },
+    //     {
+    //       name: "roleId",
+    //       type: "list",
+    //       message: "Which is their new role of the employee",
+    //       choices: listRowChoices,
+    //     },
+    //   ])
+    //   .then((answer) => {
+    //     console.log(answer);
+    //   });
+  });
+}
 // if (answer.userViewEntry === "View departments") {
 //     connection.query("SELECT * FROM department", (err, res) => {
 //       if (err) throw err;
@@ -282,6 +319,7 @@ function endProgram() {
 //       initiate();
 
 initiate();
+
 // addEntry();
 //   ])
 //  .then((answer) => {
